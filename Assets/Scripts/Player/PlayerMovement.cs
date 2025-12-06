@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    Rigidbody2D rb;
+    [SerializeField] private Rigidbody2D rb;
     [SerializeField] public float moveSpeed = 1f;
     public float positionPlayer;
     [SerializeField] public float jumpForce = 2f;
@@ -14,18 +14,34 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public LayerMask groundLayer;
     bool isGrounded;
-
-
+    bool isPaused = false;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
+        if (isPaused)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
         MovePlayer();
+    }
+
+    public void SetMove(bool pause)
+    {
+        isPaused = pause;
+        if(isPaused)
+        {
+            rb.gravityScale = 0;
+        }
+        else
+        {
+            rb.gravityScale = 1;
+        }
     }
 
     public void MovePlayer()
