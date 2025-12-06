@@ -4,37 +4,47 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rd;
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpForce = 10f;
+    Rigidbody2D rb;
+    [SerializeField] public float moveSpeed = 1f;
+    public float positionPlayer;
+    [SerializeField] public float jumpForce = 2f;
 
-    private bool isGrounded = true;
+    public Transform groundCheck;
+    public LayerMask groundLayer;
+    bool isGrounded;
+
     private void Start()
     {
-        rd = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
         MovePlayer();
     }
+
     public void MovePlayer()
     {
-        float pressHorizontal = Input.GetAxis("Horizontal");
-
-        if(pressHorizontal != 0)
+        // Movement
+        if (Input.GetKey(KeyCode.A))
         {
-            rd.velocity = new Vector2(pressHorizontal * moveSpeed, rd.velocity.y);
+            positionPlayer = -1;
         }
-        else
+        else if (Input.GetKey(KeyCode.D))
         {
-            rd.velocity = new Vector2(0, rd.velocity.y);
+            positionPlayer = 1;
         }
+        else 
+            positionPlayer = 0;
 
-        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        transform.Translate(Vector3.right * moveSpeed * positionPlayer * Time.deltaTime);
+
+        // Jump
+        isGrounded = Physics2D.OverlapCapsule(groundCheck.position, new Vector2(0.95f, 0.2f), CapsuleDirection2D.Horizontal, 0, groundLayer);
+
+        if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
-            rd.velocity = new Vector2(rd.velocity.x, jumpForce);
-            //isGrounded = false;
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
     }
 }
