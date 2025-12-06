@@ -69,11 +69,33 @@ public class PlayerCheckLight : MonoBehaviour
             for (int i = 0; i < poly.points.Length; i++)
                 yield return poly.transform.TransformPoint(poly.points[i]);
         }
-        // ✅ TilemapCollider2D (phần bạn yêu cầu thêm)
+        // ✅ TilemapCollider2D
         else if (col is TilemapCollider2D tileCol)
         {
             Bounds b = tileCol.bounds;
             yield return b.center;
+        }
+        // ✅ CompositeCollider2D (PHẦN BẠN YÊU CẦU THÊM)
+        else if (col is CompositeCollider2D composite)
+        {
+            int pathCount = composite.pathCount;
+            Vector2[] pointsBuffer = new Vector2[64];
+
+            for (int p = 0; p < pathCount; p++)
+            {
+                int pointCount = composite.GetPathPointCount(p);
+
+                // Resize buffer nếu thiếu
+                if (pointsBuffer.Length < pointCount)
+                    pointsBuffer = new Vector2[pointCount];
+
+                composite.GetPath(p, pointsBuffer);
+
+                for (int i = 0; i < pointCount; i++)
+                {
+                    yield return composite.transform.TransformPoint(pointsBuffer[i]);
+                }
+            }
         }
     }
 
