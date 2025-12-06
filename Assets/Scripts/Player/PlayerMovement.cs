@@ -9,13 +9,18 @@ public class PlayerMovement : MonoBehaviour
     public float positionPlayer;
     [SerializeField] public float jumpForce = 2f;
 
+    [SerializeField] private Animator animator;
+    private SpriteRenderer spriteRenderer;
     public Transform groundCheck;
     public LayerMask groundLayer;
     bool isGrounded;
 
+
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -29,13 +34,21 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             positionPlayer = -1;
+            animator.SetBool("isRunning", true);
+            spriteRenderer.flipX = true;  
         }
         else if (Input.GetKey(KeyCode.D))
         {
             positionPlayer = 1;
+            animator.SetBool("isRunning", true);
+            spriteRenderer.flipX = false;
         }
-        else 
+        else
+        {
             positionPlayer = 0;
+            animator.SetBool("isRunning", false);
+        }
+            
 
         transform.Translate(Vector3.right * moveSpeed * positionPlayer * Time.deltaTime);
 
