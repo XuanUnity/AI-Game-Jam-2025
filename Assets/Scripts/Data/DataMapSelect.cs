@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StartManager : MonoBehaviour
+public class DataMapSelect : MonoBehaviour
 {
+    [SerializeField] private int mapID;
     [SerializeField] private Button btnPlay;
 
     private void Start()
     {
         btnPlay.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene("MainScene");
+            GameManagerInMap.Instance.StartGame(mapID);
         });
     }
 }

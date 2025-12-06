@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maps:
   - mapName: Map1
-    mapID: 1
+    mapID: 0
     timeLimit: 60
     healthPlayer: 100
     enrgyPlayer: 100
