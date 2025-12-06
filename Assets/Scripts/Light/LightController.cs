@@ -9,6 +9,7 @@ public class LightController : MonoBehaviour
     [SerializeField] private float limitRotationRight;
 
     [SerializeField] private float speedLight;
+    [SerializeField] private TimeSlider timeSlider;
 
     private float rotationZ;
     private bool movingLeft = true;  // true = từ trái sang phải, false = từ phải sang trái
@@ -25,6 +26,12 @@ public class LightController : MonoBehaviour
         if(!pause)
         {
             isTimeReversing = false;
+            timeSlider.ContinueTime();
+            timeSlider.TimeReversal(false);
+        }
+        else
+        {
+            timeSlider.PauseTime();
         }
     }
 
@@ -34,11 +41,15 @@ public class LightController : MonoBehaviour
         Light.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
         SetActionLight(false);
         isTimeReversing = false;
+        timeSlider.StartTimer();
     }
 
     private void Update()
     {
-        if(isPause ) return;
+        if (isPause)
+        {
+            return;
+        }
 
         RunLight();
         TimeReversal();
@@ -53,9 +64,11 @@ public class LightController : MonoBehaviour
                 rotationZ += speedLight * Time.deltaTime;
                 PlayerController.Instance.Energy -= 1;
                 PlayerController.Instance.SetEnergyBar();
+                timeSlider.TimeReversal(true);
                 if(PlayerController.Instance.Energy < 0)
                 {
                     isTimeReversing = false;
+                    timeSlider.TimeReversal(false);
                 }
             } else
                 rotationZ -= speedLight * Time.deltaTime;
@@ -73,9 +86,11 @@ public class LightController : MonoBehaviour
                 rotationZ += speedLight * Time.deltaTime;
                 PlayerController.Instance.Energy -= 1;
                 PlayerController.Instance.SetEnergyBar();
+                timeSlider.TimeReversal(true);
                 if (PlayerController.Instance.Energy < 0)
                 {
                     isTimeReversing = false;
+                    timeSlider.TimeReversal(false);
                 }
             }
             else
@@ -104,6 +119,7 @@ public class LightController : MonoBehaviour
         if(Input.GetKeyUp(KeyCode.F))
         {
             isTimeReversing = false;
+            timeSlider.TimeReversal(false);
         }
     }
 }

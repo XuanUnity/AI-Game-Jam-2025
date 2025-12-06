@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class ScrollSelect : MonoBehaviour
 {
-    [SerializeField] private float scrollSpeed = 1f;
-    [SerializeField] private float smoothSpeed = 10f;
-    [SerializeField] private float leftLimit = -500f;
-    [SerializeField] private float rightLimit = 500f;
+    [SerializeField] private float scrollSpeed;
+    [SerializeField] private float smoothSpeed;
+    [SerializeField] private float leftLimit;
+    [SerializeField] private float rightLimit;
 
-    private Vector3 lastMousePos;
+    private RectTransform rect;
+    private Vector2 lastMousePos;
     private float velocityX;
+
+    void Awake()
+    {
+        rect = GetComponent<RectTransform>();
+    }
 
     void Update()
     {
@@ -24,17 +30,17 @@ public class ScrollSelect : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             lastMousePos = Input.mousePosition;
-            velocityX = 0;
+            velocityX = 0f;
         }
 
         if (Input.GetMouseButton(0))
         {
-            Vector3 delta = Input.mousePosition - lastMousePos;
-            float moveX = delta.x * scrollSpeed * Time.deltaTime;
+            float deltaX = Input.mousePosition.x - lastMousePos.x;
+            float move = deltaX * scrollSpeed * Time.deltaTime;
 
-            transform.position += new Vector3(moveX, 0, 0);
+            rect.anchoredPosition += new Vector2(move, 0);
+            velocityX = move / Time.deltaTime;
 
-            velocityX = moveX * 60f; // Lưu tốc độ theo frame
             lastMousePos = Input.mousePosition;
         }
     }
@@ -43,18 +49,15 @@ public class ScrollSelect : MonoBehaviour
     {
         if (!Input.GetMouseButton(0))
         {
-            if (Mathf.Abs(velocityX) > 0.01f)
-            {
-                transform.position += new Vector3(velocityX * Time.deltaTime, 0, 0);
-                velocityX = Mathf.Lerp(velocityX, 0, smoothSpeed * Time.deltaTime);
-            }
+            velocityX = Mathf.Lerp(velocityX, 0f, smoothSpeed * Time.deltaTime);
+            rect.anchoredPosition += new Vector2(velocityX * Time.deltaTime, 0);
         }
     }
 
     void ClampPosition()
     {
-        Vector3 pos = transform.position;
+        Vector2 pos = rect.anchoredPosition;
         pos.x = Mathf.Clamp(pos.x, leftLimit, rightLimit);
-        transform.position = pos;
+        rect.anchoredPosition = pos;
     }
 }

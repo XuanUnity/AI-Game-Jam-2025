@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Tilemaps;
 
 public class PlayerCheckLight : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class PlayerCheckLight : MonoBehaviour
     // Lấy tất cả điểm kiểm tra trên collider
     private static IEnumerable<Vector2> GetColliderPoints(Collider2D col)
     {
+        // CircleCollider2D
         if (col is CircleCollider2D circle)
         {
             int segments = 12;
@@ -46,6 +48,7 @@ public class PlayerCheckLight : MonoBehaviour
                 );
             }
         }
+        // BoxCollider2D
         else if (col is BoxCollider2D box)
         {
             Vector2 size = box.size * 0.5f;
@@ -60,12 +63,20 @@ public class PlayerCheckLight : MonoBehaviour
             foreach (var p in localPoints)
                 yield return (Vector2)box.transform.TransformPoint(box.offset + p);
         }
+        // PolygonCollider2D
         else if (col is PolygonCollider2D poly)
         {
             for (int i = 0; i < poly.points.Length; i++)
                 yield return poly.transform.TransformPoint(poly.points[i]);
         }
+        // ✅ TilemapCollider2D (phần bạn yêu cầu thêm)
+        else if (col is TilemapCollider2D tileCol)
+        {
+            Bounds b = tileCol.bounds;
+            yield return b.center;
+        }
     }
+
     public Transform player;
     public Light2D lightSource;
     public LayerMask obstacleMask;
