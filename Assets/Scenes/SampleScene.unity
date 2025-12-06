@@ -168,12 +168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e77507232a8234744b1a08435eadb22f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSource: {fileID: 916613033}
-  sfxSource: {fileID: 514838033}
-  backgroundMusic: {fileID: 8300000, guid: c6ae65d64132ef7498c0ca58c71b67ca, type: 3}
-  footstepSFX: {fileID: 8300000, guid: fe0b1f9aeb45b41b089175aeeabd5d95, type: 3}
-  musicVolume: 0
-  sfxVolume: 0.01
 --- !u!43 &101900055
 Mesh:
   m_ObjectHideFlags: 0
@@ -349,7 +343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 264127291}
   m_Layer: 0
-  m_Name: groundCheck
+  m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -364,7 +358,7 @@ Transform:
   m_GameObject: {fileID: 264127290}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -957,7 +951,10 @@ MonoBehaviour:
   moveSpeed: 5
   positionPlayer: 0
   jumpForce: 10
-  groundCheck: {fileID: 0}
+  groundCheck: {fileID: 264127291}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &996490378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -972,6 +969,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 996490377}
   checkLight: {fileID: 996490379}
+  healthBar: {fileID: 0}
 --- !u!114 &996490379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1051,7 +1049,7 @@ Transform:
   m_GameObject: {fileID: 996490374}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.36, y: 3.18, z: 0}
+  m_LocalPosition: {x: -6.041, y: -1.765, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
