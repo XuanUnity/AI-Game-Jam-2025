@@ -6,6 +6,7 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
 {
     [SerializeField] private DataMap dataMap;
     [SerializeField] private LightController lightController;
+    [SerializeField] private UIWinLose uiWinLose;
 
     [Header("Game Object")]
     [SerializeField] private GameObject uiInGame;
