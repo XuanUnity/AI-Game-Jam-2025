@@ -53,7 +53,16 @@ public class PlayerController : Singleton<PlayerController>
         {
             health -= 1;
             healthBar.fillAmount = (float)health / healthMax;
-            Debug.Log("Player Health: " + health);
+            
+            if(health <= 0)
+            {
+                GameManagerInMap.Instance.LoseGame();
+            }
         }
+    }
+
+    public void SetLight(GameObject map)
+    {
+        checkLight.SetLight2D(map);
     }
 }

@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class LightController : MonoBehaviour
 {
-    [SerializeField] private GameObject Light;
-    [SerializeField] private float limitRotationLeft;
-    [SerializeField] private float limitRotationRight;
+    [SerializeField] private GameObject lightObject;
+    [SerializeField] private float limitStart = 70f;     // góc bắt đầu
+    [SerializeField] private float limitEnd = -70f;      // góc kết thúc
 
-    [SerializeField] private float speedLight;
+    [SerializeField] private float speedLight = 60f;
     [SerializeField] private TimeSlider timeSlider;
 
     private float rotationZ;
-    private bool movingLeft = true;  // true = từ trái sang phải, false = từ phải sang trái
+    private bool isRunning = false;
     private bool isTimeReversing = false;
     private bool isPause = false;
 
@@ -20,106 +20,110 @@ public class LightController : MonoBehaviour
     {
         GameManagerInMap.Instance.InitLight(this);
     }
-    public void SetActionLight(bool pause)
-    {
-        isPause = pause;
-        if(!pause)
-        {
-            isTimeReversing = false;
-            timeSlider.ContinueTime();
-            timeSlider.TimeReversal(false);
-        }
-        else
-        {
-            timeSlider.PauseTime();
-        }
-    }
 
     public void StartLight()
     {
-        rotationZ = limitRotationLeft;
-        Light.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
-        SetActionLight(false);
+        rotationZ = limitStart;
+        lightObject.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
+
+        isRunning = true;
+        isPause = false;
         isTimeReversing = false;
+
         timeSlider.StartTimer();
     }
 
     private void Update()
     {
-        if (isPause)
-        {
-            return;
-        }
+        if (isPause || !isRunning) return;
 
+        HandleTimeReversalInput();
         RunLight();
-        TimeReversal();
     }
 
-    public void RunLight()
+    private void RunLight()
     {
-        if (movingLeft)
-        {
-            if(isTimeReversing)
-            {
-                rotationZ += speedLight * Time.deltaTime;
-                PlayerController.Instance.Energy -= 1;
-                PlayerController.Instance.SetEnergyBar();
-                timeSlider.TimeReversal(true);
-                if(PlayerController.Instance.Energy < 0)
-                {
-                    isTimeReversing = false;
-                    timeSlider.TimeReversal(false);
-                }
-            } else
-                rotationZ -= speedLight * Time.deltaTime;
+        float rotateSpeed = speedLight * Time.deltaTime;
 
-            if (rotationZ <= limitRotationRight)
+        if (isTimeReversing)
+        {
+            // Quay ngược lại (về 70)
+            rotationZ += rotateSpeed;
+            DrainEnergy();
+
+            if (rotationZ >= limitStart)
             {
-                rotationZ = limitRotationRight;
-                movingLeft = false;  // đổi hướng
+                rotationZ = limitStart;
             }
         }
         else
         {
-            if (isTimeReversing)
-            {
-                rotationZ += speedLight * Time.deltaTime;
-                PlayerController.Instance.Energy -= 1;
-                PlayerController.Instance.SetEnergyBar();
-                timeSlider.TimeReversal(true);
-                if (PlayerController.Instance.Energy < 0)
-                {
-                    isTimeReversing = false;
-                    timeSlider.TimeReversal(false);
-                }
-            }
-            else
-                rotationZ -= speedLight * Time.deltaTime;
+            // Quay xuôi (từ 70 -> -70)
+            rotationZ -= rotateSpeed;
 
-            if (rotationZ >= limitRotationLeft)
+            if (rotationZ <= limitEnd)
             {
-                rotationZ = limitRotationLeft;
-                movingLeft = true;   // đổi hướng
+                rotationZ = limitEnd;
+                StopLight();
             }
         }
 
-        Light.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
+        lightObject.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
     }
 
-    public void TimeReversal()
+    private void StopLight()
     {
+        isRunning = false;
+        OnEnd();
+    }
 
-        if(Input.GetKeyDown(KeyCode.F))
+    // Hàm rỗng – bạn dùng sau này nếu muốn xử lý thêm
+    private void OnEnd()
+    {
+        GameManagerInMap.Instance.LoseGame();
+    }
+
+    private void HandleTimeReversalInput()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            if(PlayerController.Instance.Energy >= 0.1f)
+            if (PlayerController.Instance.Energy > 0)
             {
                 isTimeReversing = true;
+                timeSlider.TimeReversal(true);
             }
         }
-        if(Input.GetKeyUp(KeyCode.F))
+
+        if (Input.GetKeyUp(KeyCode.F))
         {
             isTimeReversing = false;
             timeSlider.TimeReversal(false);
+        }
+    }
+
+    private void DrainEnergy()
+    {
+        PlayerController.Instance.Energy -= Time.deltaTime * 10f;
+        PlayerController.Instance.SetEnergyBar();
+
+        if (PlayerController.Instance.Energy <= 0)
+        {
+            isTimeReversing = false;
+            timeSlider.TimeReversal(false);
+        }
+    }
+
+    public void SetActionLight(bool pause)
+    {
+        isPause = pause;
+
+        if (pause)
+        {
+            timeSlider.PauseTime();
+        }
+        else
+        {
+            timeSlider.ContinueTime();
         }
     }
 }

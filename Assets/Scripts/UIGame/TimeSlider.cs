@@ -8,7 +8,7 @@ public class TimeSlider : MonoBehaviour
     public Image fillImage;
 
     [Header("Time")]
-    public float duration = 10f; // Tổng thời gian
+    public float duration = 5f; // Tổng thời gian
 
     [Header("Colors")]
     public Color startColor = Color.yellow;

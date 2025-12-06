@@ -104,6 +104,34 @@ public class PlayerCheckLight : MonoBehaviour
     public LayerMask obstacleMask;
     public bool inLight;
 
+    public void SetLight2D(GameObject map)
+    {
+        if (map == null)
+        {
+            Debug.LogError("Map is null!");
+            lightSource =  null;
+        }
+
+        // Tìm GameObject con tên "Light"
+        Transform lightParent = map.transform.Find("Light");
+        if (lightParent == null)
+        {
+            Debug.LogError("Không tìm thấy object 'Light' trong Map!");
+            lightSource = null;
+        }
+
+        // Tìm component Light2D trong các object con của "Light"
+        Light2D light2D = lightParent.GetComponentInChildren<Light2D>(true);
+
+        if (light2D == null)
+        {
+            Debug.LogError("Không tìm thấy Light2D trong 'Light'!");
+            lightSource = null;
+        }
+
+        lightSource = light2D;
+    }
+
     void Update()
     {
         inLight = IsPlayerInLight(player, lightSource, obstacleMask);

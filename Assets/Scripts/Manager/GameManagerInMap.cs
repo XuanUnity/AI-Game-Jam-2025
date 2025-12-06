@@ -12,6 +12,7 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
     [SerializeField] private GameObject uiInGame;
     [SerializeField] private GameObject player;
     [SerializeField] private List<GameObject> mapObjects;
+    [SerializeField] private List<DataMapSelect> dataMapSelect;
     private GameObject currentMap;
     private int currentMapID;
 
@@ -31,6 +32,7 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
 
         OnActivePlayer(currentMap);
         PlayerController.Instance.InitState(selectedMap);
+        PlayerController.Instance.SetLight(currentMap);
         uiInGame.SetActive(true);
         lightController.StartLight();
     }
@@ -46,7 +48,15 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
 
     public void NextLevelGame() // level tiếp theo
     {
+        currentMap.SetActive(false);
+        if (currentMapID < mapObjects.Count)
+        {
+            currentMapID++;
+            dataMapSelect[currentMapID].UnLock();
+        }
 
+
+        StartGame(currentMapID);
     }
 
     public void PauseGame()
@@ -72,12 +82,14 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
 
     public void WinGame()
     {
-
+        uiWinLose.Win();
+        PauseGame();
     }
 
     public void LoseGame()
     {
-
+        uiWinLose.Lose();
+        PauseGame();
     }
     public GameObject GetMapByID(int idmap)
     {

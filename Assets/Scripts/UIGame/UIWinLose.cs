@@ -21,7 +21,7 @@ public class UIWinLose : MonoBehaviour
         btnBack.onClick.AddListener(() =>
         {
             GameManagerInMap.Instance.EndGame();
-            pannelLose.SetActive(false);
+            pannelWin.SetActive(false);
         });
         btnBackLose.onClick.AddListener(() =>
         {
@@ -43,5 +43,15 @@ public class UIWinLose : MonoBehaviour
             GameManagerInMap.Instance.NextLevelGame();
             pannelWin.SetActive(false);
         });
+    }
+
+    public void Win()
+    {
+        pannelWin.SetActive(true);
+    }
+
+    public void Lose()
+    {
+        pannelLose.SetActive(true);
     }
 }
