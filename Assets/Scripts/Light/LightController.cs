@@ -13,15 +13,33 @@ public class LightController : MonoBehaviour
     private float rotationZ;
     private bool movingLeft = true;  // true = từ trái sang phải, false = từ phải sang trái
     private bool isTimeReversing = false;
+    private bool isPause = false;
 
-    private void Start()
+    private void OnEnable()
+    {
+        GameManagerInMap.Instance.InitLight(this);
+    }
+    public void SetActionLight(bool pause)
+    {
+        isPause = pause;
+        if(!pause)
+        {
+            isTimeReversing = false;
+        }
+    }
+
+    public void StartLight()
     {
         rotationZ = limitRotationLeft;
         Light.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
+        SetActionLight(false);
+        isTimeReversing = false;
     }
 
     private void Update()
     {
+        if(isPause ) return;
+
         RunLight();
         TimeReversal();
     }
@@ -33,6 +51,12 @@ public class LightController : MonoBehaviour
             if(isTimeReversing)
             {
                 rotationZ += speedLight * Time.deltaTime;
+                PlayerController.Instance.Energy -= 1;
+                PlayerController.Instance.SetEnergyBar();
+                if(PlayerController.Instance.Energy < 0)
+                {
+                    isTimeReversing = false;
+                }
             } else
                 rotationZ -= speedLight * Time.deltaTime;
 
@@ -47,6 +71,12 @@ public class LightController : MonoBehaviour
             if (isTimeReversing)
             {
                 rotationZ += speedLight * Time.deltaTime;
+                PlayerController.Instance.Energy -= 1;
+                PlayerController.Instance.SetEnergyBar();
+                if (PlayerController.Instance.Energy < 0)
+                {
+                    isTimeReversing = false;
+                }
             }
             else
                 rotationZ -= speedLight * Time.deltaTime;
@@ -63,9 +93,13 @@ public class LightController : MonoBehaviour
 
     public void TimeReversal()
     {
+
         if(Input.GetKeyDown(KeyCode.F))
         {
-            isTimeReversing = true;
+            if(PlayerController.Instance.Energy >= 0.1f)
+            {
+                isTimeReversing = true;
+            }
         }
         if(Input.GetKeyUp(KeyCode.F))
         {

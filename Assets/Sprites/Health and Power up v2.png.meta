@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 464690e99ca29184d923a0c0fed03953
+guid: 044da2cf4f42b864783b3b6ea881a75f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Button1_0
+      name: Health and Power up v2_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 43
-        width: 109
-        height: 49
+        x: 15
+        y: 103
+        width: 20
+        height: 19
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,8 +137,113 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7f3091558d0a99f418d302c528c0a21d
-      internalID: 871640764
+      spriteID: e9f48302c06995b47a0b9fca5a3cdb2e
+      internalID: 1658096068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health and Power up v2_1
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 97
+        width: 215
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4938b9baddeae74cb8e04fca27979c8
+      internalID: 1400988549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health and Power up v2_2
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 72
+        width: 20
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e6951e2539242043a1309792fb8ad9a
+      internalID: -2100872467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health and Power up v2_3
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 65
+        width: 215
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ad837cde7e06a04e9d2737cf0067281
+      internalID: -1318831078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health and Power up v2_4
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 43
+        width: 207
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c099cc7c87c3fa4419dad1796e6de00d
+      internalID: -1354844633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health and Power up v2_5
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 21
+        width: 206
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54fd6f486567ca54d8c6565a7269651f
+      internalID: -281711095
       vertices: []
       indices: 
       edges: []
@@ -154,7 +259,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Button1_0: 871640764
+      Health and Power up v2_0: 1658096068
+      Health and Power up v2_1: 1400988549
+      Health and Power up v2_2: -2100872467
+      Health and Power up v2_3: -1318831078
+      Health and Power up v2_4: -1354844633
+      Health and Power up v2_5: -281711095
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

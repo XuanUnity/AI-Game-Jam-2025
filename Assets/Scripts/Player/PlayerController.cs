@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,11 +13,23 @@ public class PlayerController : Singleton<PlayerController>
     private float health;
     private float healthMax;
     private float energy;
+    public float energyMax;
+    public float Energy { get { return energy; } set { energy = value; } }
 
     public Image healthBar;
+    public Image energyBar;
+    public bool isPause;
+
+    public void SetPause(bool pause)
+    {
+        isPause = pause;
+        playerMovement.SetMove(pause);
+    }
 
     private void Update()
     {
+        if(isPause) return;
+
         TakeDamageByLight();
     }
     public void InitState(MapData data)
@@ -24,6 +37,14 @@ public class PlayerController : Singleton<PlayerController>
         healthMax = data.healthPlayer;
         health = healthMax;
         energy = data.enrgyPlayer;
+        energyMax = energy;
+        healthBar.fillAmount = 1f;
+        SetPause(false);
+        energyBar.fillAmount = 1f;
+    }
+    public void SetEnergyBar()
+    {
+        energyBar.fillAmount = energy / energyMax;
     }
 
     public void TakeDamageByLight()

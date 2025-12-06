@@ -74,10 +74,5 @@ public class PlayerCheckLight : MonoBehaviour
     void Update()
     {
         inLight = IsPlayerInLight(player, lightSource, obstacleMask);
-
-        if (inLight)
-            Debug.Log("Player đang đứng trong ánh sáng!");
-        else
-            Debug.Log("Player đang ở trong bóng tối!");
     }
 }

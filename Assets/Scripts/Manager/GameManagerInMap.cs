@@ -1,18 +1,27 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManagerInMap : Singleton<GameManagerInMap>
 {
     [SerializeField] private DataMap dataMap;
+    [SerializeField] private LightController lightController;
 
     [Header("Game Object")]
     [SerializeField] private GameObject uiInGame;
     [SerializeField] private GameObject player;
     [SerializeField] private List<GameObject> mapObjects;
     private GameObject currentMap;
+    private int currentMapID;
+
+    public void InitLight(LightController controller)
+    {
+        lightController = controller;
+    }
+
     public void StartGame(int mapID)
     {
+        currentMapID = mapID;
         UIGameManager.Instance.SetActiveUIMainGame(false);
         MapData selectedMap = dataMap.maps.Find(map => map.mapID == mapID);
         currentMap = GetMapByID(mapID);
@@ -22,6 +31,33 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
         OnActivePlayer(currentMap);
         PlayerController.Instance.InitState(selectedMap);
         uiInGame.SetActive(true);
+        lightController.StartLight();
+    }
+
+    public void RestartGame()
+    {
+        if(currentMap == null)
+        {
+            Debug.Log("Current map is null, cannot restart game.");
+        }
+        StartGame(currentMapID);
+    }
+
+    public void NextLevelGame() // level tiếp theo
+    {
+
+    }
+
+    public void PauseGame()
+    {
+        PlayerController.Instance.SetPause(true);
+        lightController.SetActionLight(true);
+    }
+
+    public void ContinueGame()
+    {
+        PlayerController.Instance.SetPause(false);
+        lightController.SetActionLight(false);
     }
 
     public void EndGame()
@@ -31,6 +67,16 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
         currentMap.SetActive(false);
         currentMap = null;
         UIGameManager.Instance.SetActiveUIMainGame(true);
+    }
+
+    public void WinGame()
+    {
+
+    }
+
+    public void LoseGame()
+    {
+
     }
     public GameObject GetMapByID(int idmap)
     {
