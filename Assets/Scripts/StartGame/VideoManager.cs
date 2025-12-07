@@ -30,7 +30,11 @@ public class VideoManager : MonoBehaviour
         // Nếu chưa từng chạy → FirstTimePlayed = false
         firstTimePlayed = PlayerPrefs.GetInt("FirstTimePlayed", 0) == 1;
         //firstTimePlayed = false;
-        skipButton.onClick.AddListener(SkipVideo);
+        skipButton.onClick.AddListener(() =>
+        {
+            AudioStartManager.Instance.PlayButtonClick();
+            SkipVideo();
+        });
     }
 
     // Gọi hàm này khi nhấn nút Play

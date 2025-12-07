@@ -35,24 +35,28 @@ public class StartManager : MonoBehaviour
         // ========== BUTTON EVENTS ==========
         btnPlay.onClick.AddListener(() =>
         {
+            AudioStartManager.Instance.PlayButtonClick();
             if (isMoving) return;
             videoManager.OnPlayClicked();
         });
 
         btnSetting.onClick.AddListener(() =>
         {
+            AudioStartManager.Instance.PlayButtonClick();
             if (isMoving) return;
             OpenMenu();
         });
 
         btnExit.onClick.AddListener(() =>
         {
+            AudioStartManager.Instance.PlayButtonClick();
             if (isMoving) return;
             Application.Quit();
         });
 
         btnBack.onClick.AddListener(() =>
         {
+            AudioStartManager.Instance.PlayButtonClick();
             if (isMoving) return;
             CloseMenu();
         });
@@ -64,6 +68,9 @@ public class StartManager : MonoBehaviour
         // Load volume đã lưu
         sliderMusic.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
         sliderSound.value = PlayerPrefs.GetFloat("SoundVolume", 1f);
+
+        //Start BGM Source
+        AudioStartManager.Instance.PlayBGM(true);
     }
 
     // ================= MENU ANIMATION =================
@@ -75,6 +82,9 @@ public class StartManager : MonoBehaviour
         btnBack.interactable = false;
 
         menuRect.anchoredPosition = hiddenPos;
+
+        sliderMusic.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        sliderSound.value = PlayerPrefs.GetFloat("SoundVolume", 1f);
 
         menuRect.DOAnchorPos(showPos, 1f)
             .SetEase(Ease.OutCubic)
@@ -103,15 +113,11 @@ public class StartManager : MonoBehaviour
 
     private void SetMusicVolume(float value)
     {
-        // Gắn cho AudioSource nhạc nền
-        AudioListener.volume = value;
-
-        PlayerPrefs.SetFloat("MusicVolume", value);
+        AudioStartManager.Instance.SetBGMVolume(value);
     }
 
     private void SetSoundVolume(float value)
     {
-        // Tuỳ bạn xử lý từng AudioSource effect riêng
-        PlayerPrefs.SetFloat("SoundVolume", value);
+        AudioStartManager.Instance.SetSFXVolume(value);
     }
 }
