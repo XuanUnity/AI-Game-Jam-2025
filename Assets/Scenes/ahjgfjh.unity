@@ -6897,7 +6897,7 @@ GameObject:
   m_Component:
   - component: {fileID: 802394891}
   - component: {fileID: 802394892}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10209,7 +10209,7 @@ GameObject:
   - component: {fileID: 1242223026}
   - component: {fileID: 1242223029}
   - component: {fileID: 1242223028}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13487,7 +13487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1666829539}
   - component: {fileID: 1666829540}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: shadow_caster_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13799,7 +13799,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1748109463
 Transform:
   m_ObjectHideFlags: 0
@@ -15755,7 +15755,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1999182306}
   - component: {fileID: 1999182307}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: shadow_caster_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
