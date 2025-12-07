@@ -15,6 +15,22 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
     [SerializeField] private List<DataMapSelect> dataMapSelect;
     private GameObject currentMap;
     private int currentMapID;
+    private int mapUnLock;
+
+    private void Start()
+    {
+        this.gameObject.SetActive(true);
+        mapUnLock = PlayerPrefs.GetInt("MapUnLock", 0);
+        SetMapUnLock();
+    }
+    public void SetMapUnLock()
+    {
+        for (int i = 0; i <= mapUnLock; i++)
+        {
+            if (dataMapSelect[i].isLock)
+                dataMapSelect[i].UnLock();
+        }
+    }
 
     public void InitLight(LightController controller)
     {
@@ -52,6 +68,8 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
         if (currentMapID < mapObjects.Count)
         {
             currentMapID++;
+            mapUnLock = Mathf.Max(mapUnLock, currentMapID);
+            PlayerPrefs.SetInt("MapUnLock", mapUnLock);
             dataMapSelect[currentMapID].UnLock();
         }
 
