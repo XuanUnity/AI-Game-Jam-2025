@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,6 +25,10 @@ public class DoorController : MonoBehaviour
             {
                 TutorialManager.Instance.isTutorial = false;
             }
+            DOVirtual.DelayedCall(2f, () =>
+            {
+                isTriggered = false;
+            });
         }
     }
 
