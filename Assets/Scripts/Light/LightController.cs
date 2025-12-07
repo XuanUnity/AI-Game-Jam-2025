@@ -8,9 +8,9 @@ public class LightController : MonoBehaviour
     [SerializeField] private float limitStart = 70f;     // góc bắt đầu
     [SerializeField] private float limitEnd = -70f;      // góc kết thúc
 
-    [SerializeField] private float speedLight = 60f;
+    [SerializeField] private float dynamicSpeed;
     [SerializeField] private TimeSlider timeSlider;
-
+    private float durateTime;
     private float rotationZ;
     private bool isRunning = false;
     private bool isTimeReversing = false;
@@ -21,16 +21,20 @@ public class LightController : MonoBehaviour
         GameManagerInMap.Instance.InitLight(this);
     }
 
-    public void StartLight()
+    public void StartLight(float time)
     {
         rotationZ = limitStart;
         lightObject.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
+        durateTime = time;
+
+        float angleDistance = Mathf.Abs(limitStart - limitEnd); // 140
+        dynamicSpeed = angleDistance / durateTime;              // độ/giây
 
         isRunning = true;
         isPause = false;
         isTimeReversing = false;
 
-        timeSlider.StartTimer();
+        timeSlider.StartTimer(time);
     }
 
     private void Update()
@@ -43,7 +47,7 @@ public class LightController : MonoBehaviour
 
     private void RunLight()
     {
-        float rotateSpeed = speedLight * Time.deltaTime;
+        float rotateSpeed = dynamicSpeed * Time.deltaTime;
 
         if (isTimeReversing)
         {
