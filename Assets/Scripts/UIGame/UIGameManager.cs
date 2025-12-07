@@ -19,14 +19,17 @@ public class UIGameManager : Singleton<UIGameManager>
     {
         btnBack.onClick.AddListener(() =>
         {
+            AudioManagerMain.Instance.PlayButtonClick();
             SceneManager.LoadScene("StartScene");
         });
         Settings.onClick.AddListener(() =>
         {
+            AudioManagerMain.Instance.PlayButtonClick();
             panelSetting.SetActive(true);
         });
         btnBackMenu.onClick.AddListener(() =>
         {
+            AudioManagerMain.Instance.PlayButtonClick();
             panelSetting.SetActive(false);
         });
     }

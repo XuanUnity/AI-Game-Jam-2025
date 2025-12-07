@@ -106,6 +106,7 @@ public class LightController : MonoBehaviour
             if (PlayerController.Instance.Energy > 0)
             {
                 EffectTimeManager.Instance.OnUseSkill();
+                PlayerController.Instance.SetSkill(true);
                 isTimeReversing = true;
                 timeSlider.TimeReversal(true);
             }
@@ -113,6 +114,7 @@ public class LightController : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.F))
         {
+            PlayerController.Instance.SetSkill(false);
             isTimeReversing = false;
             timeSlider.TimeReversal(false);
         }

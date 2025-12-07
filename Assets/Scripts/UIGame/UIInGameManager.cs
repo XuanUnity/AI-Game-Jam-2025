@@ -26,26 +26,31 @@ public class UIInGameManager : MonoBehaviour
     private void Awake()
     {
         //Nhan setting -> bat pannel setting
-        btnSetting.onClick.AddListener(() => { 
+        btnSetting.onClick.AddListener(() => {
+            AudioManagerMain.Instance.PlayButtonClick();
             GameManagerInMap.Instance.PauseGame();
             pannelMenuSetting.SetActive(true);
         });
 
         //Trong menu setting
         btnBack.onClick.AddListener(() => {
+            AudioManagerMain.Instance.PlayButtonClick();
             GameManagerInMap.Instance.ContinueGame();
             pannelMenuSetting.SetActive(false);
         });
         btnSettings.onClick.AddListener(() => {
+            AudioManagerMain.Instance.PlayButtonClick();
             pannelMenuMusic.SetActive(true);
             pannelMenuSetting.SetActive(false);
         });
         btnRetry.onClick.AddListener(() => {
             //reset map
+            AudioManagerMain.Instance.PlayButtonClick();
             GameManagerInMap.Instance.RestartGame();
             pannelMenuSetting.SetActive(false);
         });
         btnHome.onClick.AddListener(() => {
+            AudioManagerMain.Instance.PlayButtonClick();
             //ve home
             GameManagerInMap.Instance.EndGame();
             pannelMenuSetting.SetActive(false);
@@ -53,6 +58,7 @@ public class UIInGameManager : MonoBehaviour
 
         //Trong menu setting music
         btnBackSun.onClick.AddListener(() => {
+            AudioManagerMain.Instance.PlayButtonClick();
             pannelMenuMusic.SetActive(false);
             pannelMenuSetting.SetActive(true);
         });

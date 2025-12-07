@@ -20,26 +20,31 @@ public class UIWinLose : MonoBehaviour
     {
         btnBack.onClick.AddListener(() =>
         {
+            AudioManagerMain.Instance.PlayButtonClick();
             GameManagerInMap.Instance.EndGame();
             pannelWin.SetActive(false);
         });
         btnBackLose.onClick.AddListener(() =>
         {
+            AudioManagerMain.Instance.PlayButtonClick();
             GameManagerInMap.Instance.EndGame();
             pannelLose.SetActive(false);
         });
         btnRetry.onClick.AddListener(() =>
         {
+            AudioManagerMain.Instance.PlayButtonClick();
             GameManagerInMap.Instance.RestartGame();
             pannelWin.SetActive(false);
         });
         btnRetryLose.onClick.AddListener(() =>
         {
+            AudioManagerMain.Instance.PlayButtonClick();
             GameManagerInMap.Instance.RestartGame();
             pannelLose.SetActive(false);
         });
         btnNext.onClick.AddListener(() =>
         {
+            AudioManagerMain.Instance.PlayButtonClick();
             GameManagerInMap.Instance.NextLevelGame();
             pannelWin.SetActive(false);
         });

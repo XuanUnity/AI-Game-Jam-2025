@@ -131,6 +131,7 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         isTutorial = true;
         indexStep = 2;
+        step1.SetActive(false);
         step2.SetActive (true);
         GameManagerInMap.Instance.PauseGame();
     }

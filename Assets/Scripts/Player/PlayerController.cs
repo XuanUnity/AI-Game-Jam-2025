@@ -30,6 +30,10 @@ public class PlayerController : Singleton<PlayerController>
         isPause = pause;
         playerMovement.SetMove(pause);
     }
+    public void SetSkill(bool val)
+    {
+        playerMovement.isSkill = val;
+    }
 
     private void Update()
     {
@@ -47,6 +51,7 @@ public class PlayerController : Singleton<PlayerController>
         SetPause(false);
         energyBar.fillAmount = 1f;
         gameObject.transform.localScale = Vector3.one;
+        playerMovement.isGrounded = true;
     }
     public void SetEnergyBar()
     {

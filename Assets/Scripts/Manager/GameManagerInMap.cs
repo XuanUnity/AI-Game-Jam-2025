@@ -22,6 +22,7 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
         this.gameObject.SetActive(true);
         mapUnLock = PlayerPrefs.GetInt("MapUnLock", 0);
         SetMapUnLock();
+        AudioManagerMain.Instance.PlayBGM();
     }
     public void SetMapUnLock()
     {
