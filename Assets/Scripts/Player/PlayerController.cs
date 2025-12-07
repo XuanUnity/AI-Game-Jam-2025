@@ -59,12 +59,14 @@ public class PlayerController : Singleton<PlayerController>
         {
             health -= 1;
             healthBar.fillAmount = (float)health / healthMax;
+            playerMovement.animator.SetBool("isTakeDamage", true);
             
             if(health <= 0)
             {
                 GameManagerInMap.Instance.LoseGame();
             }
         }
+        else playerMovement.animator.SetBool("isTakeDamage", false);
     }
 
     public void SetLight(GameObject map)

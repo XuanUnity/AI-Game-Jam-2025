@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float positionPlayer;
     [SerializeField] public float jumpForce = 2f;
 
-    [SerializeField] private Animator animator;
+    [SerializeField] public Animator animator;
     private SpriteRenderer spriteRenderer;
     public Transform groundCheck;
     public LayerMask groundLayer;
