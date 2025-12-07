@@ -3159,7 +3159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmSource: {fileID: 1289587547}
   sfxSource: {fileID: 1431267520}
-  bgmClips: {fileID: 8300000, guid: c6ae65d64132ef7498c0ca58c71b67ca, type: 3}
+  bgmClips: {fileID: 8300000, guid: 1ffa64814b6442d4d97514ba3ae74099, type: 3}
   sfxButtonClick: {fileID: 8300000, guid: 0a7b4d4a54400264b87d7d5083021a7a, type: 3}
 --- !u!1 &1431267518
 GameObject:

@@ -49,6 +49,7 @@ public class VideoManager : MonoBehaviour
         firstTimePlayed = true;
         PlayerPrefs.SetInt("FirstTimePlayed", 1);
         PlayerPrefs.SetInt("FirstTime", 1);
+        PlayerPrefs.SetInt("MapUnLock", 0);
         PlayerPrefs.Save();
         OnPlayClicked();
     }
