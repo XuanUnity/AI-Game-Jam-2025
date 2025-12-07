@@ -14,10 +14,9 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public LayerMask groundLayer;
     public bool isGrounded;
-    bool isPaused = false;
+    public bool isPaused = false;
 
-    private bool doubleJump;
-
+    public bool doubleJump;
     public bool isSkill = false;
 
     private void Start()
@@ -27,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (isPaused || isSkill)
+        if (isPaused)
         {
             rb.velocity = Vector2.zero;
             return;
@@ -38,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     public void SetMove(bool pause)
     {
         isPaused = pause;
-        if(isPaused)
+        if (isPaused)
         {
             rb.gravityScale = 0;
         }
@@ -55,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
         {
             positionPlayer = -1;
             animator.SetBool("isRunning", true);
-            spriteRenderer.flipX = true;  
+            spriteRenderer.flipX = true;
         }
         else if (Input.GetKey(KeyCode.D))
         {
@@ -70,23 +69,22 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        //transform.Translate(Vector3.right * moveSpeed * positionPlayer * Time.deltaTime);
-        rb.velocity = new Vector2(positionPlayer * moveSpeed, rb.velocity.y);
+        transform.Translate(Vector3.right * moveSpeed * positionPlayer * Time.deltaTime);
 
         // Jump
-        isGrounded = Physics2D.OverlapCapsule(groundCheck.position, new Vector2(0.5f, 0.5f), CapsuleDirection2D.Horizontal, 0, groundLayer);
+        isGrounded = Physics2D.OverlapCapsule(groundCheck.position, new Vector2(0.5f, 0.25f), CapsuleDirection2D.Horizontal, 0, groundLayer);
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            Debug.Log("Jump");
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             doubleJump = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && doubleJump) {
-            Debug.Log("Double Jump");
+        else if (Input.GetButtonDown("Jump") && doubleJump)
+        {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             doubleJump = false;
         }
-        
+
+
     }
 }
