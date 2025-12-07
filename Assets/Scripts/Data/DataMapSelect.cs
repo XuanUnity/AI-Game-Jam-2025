@@ -38,7 +38,8 @@ public class DataMapSelect : MonoBehaviour
     {
         isLock = false;
         //animator.runtimeAnimatorController = run;
-        lockMap.SetActive(false);
+        if(mapID != 0)
+            lockMap.SetActive(false);
         image.color = Color.white;
     }
 }
