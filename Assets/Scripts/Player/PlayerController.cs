@@ -52,6 +52,7 @@ public class PlayerController : Singleton<PlayerController>
         energyBar.fillAmount = 1f;
         gameObject.transform.localScale = Vector3.one;
         playerMovement.isGrounded = true;
+        playerMovement.rb.isKinematic = false;
     }
     public void SetEnergyBar()
     {
