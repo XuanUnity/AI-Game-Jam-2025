@@ -6426,7 +6426,7 @@ MonoBehaviour:
   lightObject: {fileID: 762609851}
   limitStart: 70
   limitEnd: -70
-  speedLight: 20
+  dynamicSpeed: 0
   timeSlider: {fileID: 1794376394}
 --- !u!4 &762609853
 Transform:
@@ -6626,7 +6626,7 @@ MonoBehaviour:
   lightObject: {fileID: 778250989}
   limitStart: 70
   limitEnd: -70
-  speedLight: 10
+  dynamicSpeed: 0
   timeSlider: {fileID: 1794376394}
 --- !u!1 &790816350
 GameObject:
@@ -7921,6 +7921,9 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 72
+  debugRays: 0
+  circleSamples: 12
+  tilemapGridSamples: 3
   inLight: 0
 --- !u!212 &996490380
 SpriteRenderer:
@@ -9206,9 +9209,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e0e90753e72f734395329fac504fe06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapID: 0
+  mapID: 1
   btnPlay: {fileID: 2057055667}
-  isLock: 1
+  isLock: 0
   look: {fileID: 711736207}
   animator: {fileID: 0}
   run: {fileID: 0}
