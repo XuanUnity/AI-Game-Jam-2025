@@ -20,6 +20,8 @@ public class ScrollSelect : MonoBehaviour
 
     void Update()
     {
+        if (TutorialManager.Instance.isTutorial) return;
+
         HandleScroll();
         ApplyInertia();
         ClampPosition();

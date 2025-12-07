@@ -28,7 +28,7 @@ public class VideoManager : MonoBehaviour
         Name.gameObject.SetActive(false);
 
         // Nếu chưa từng chạy → FirstTimePlayed = false
-        firstTimePlayed = PlayerPrefs.GetInt("FirstTimePlayed", 0) == 1;
+        firstTimePlayed = PlayerPrefs.GetInt("FirstTimePlayed", 1) == 0;
         //firstTimePlayed = false;
         skipButton.onClick.AddListener(() =>
         {
@@ -36,7 +36,21 @@ public class VideoManager : MonoBehaviour
             SkipVideo();
         });
     }
+    public void PlayContinue()
+    {
+        firstTimePlayed = true;
+        PlayerPrefs.SetInt("FirstTimePlayed", 0);
+        PlayerPrefs.Save();
+        OnPlayClicked();
+    }
 
+    public void PlayNewGame()
+    {
+        firstTimePlayed = false;
+        PlayerPrefs.SetInt("FirstTimePlayed", 1);
+        PlayerPrefs.Save();
+        OnPlayClicked();
+    }
     // Gọi hàm này khi nhấn nút Play
     public void OnPlayClicked()
     {

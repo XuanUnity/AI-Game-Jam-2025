@@ -105,6 +105,7 @@ public class LightController : MonoBehaviour
         {
             if (PlayerController.Instance.Energy > 0)
             {
+                EffectTimeManager.Instance.OnUseSkill();
                 isTimeReversing = true;
                 timeSlider.TimeReversal(true);
             }

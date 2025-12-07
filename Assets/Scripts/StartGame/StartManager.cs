@@ -7,12 +7,17 @@ public class StartManager : MonoBehaviour
 {
     [Header("Main Buttons")]
     [SerializeField] private Button btnPlay;
+    [SerializeField] private Button btnNewGame;
     [SerializeField] private Button btnSetting;
     [SerializeField] private Button btnExit;
 
     [Header("Setting Panel")]
     [SerializeField] private GameObject panelMenuSetting;
+    [SerializeField] private Button btnBackNewGame;
+    [SerializeField] private Button btnConfirmNewGame;
+    [SerializeField] private GameObject panelConfirmNewGame;
     [SerializeField] private RectTransform menuRect;   // RectTransform của MenuSetting
+    [SerializeField] private RectTransform menuNewGameRect;   // RectTransform của MenuNewGame
     [SerializeField] private Button btnBack;           // Nút nền mờ full màn hình
 
     [Header("Sliders")]
@@ -30,14 +35,32 @@ public class StartManager : MonoBehaviour
         // Vị trí ban đầu: ẩn menu
         menuRect.anchoredPosition = hiddenPos;
         panelMenuSetting.SetActive(false);
+        panelConfirmNewGame.SetActive(false);
         btnBack.interactable = false;
+        btnBackNewGame.interactable = false;
+        btnConfirmNewGame.interactable = false;
+
+        if(PlayerPrefs.GetInt("FirstTimePlayed", 0) == 0)
+        {
+            btnPlay.interactable = false;
+        }
+        else
+        {
+            btnPlay.interactable = true;
+        }
 
         // ========== BUTTON EVENTS ==========
         btnPlay.onClick.AddListener(() =>
         {
             AudioStartManager.Instance.PlayButtonClick();
             if (isMoving) return;
-            videoManager.OnPlayClicked();
+            videoManager.PlayContinue();
+        });
+        btnConfirmNewGame.onClick.AddListener(() =>
+        {
+            AudioStartManager.Instance.PlayButtonClick();
+            if (isMoving) return;
+            videoManager.PlayNewGame();
         });
 
         btnSetting.onClick.AddListener(() =>
@@ -45,6 +68,28 @@ public class StartManager : MonoBehaviour
             AudioStartManager.Instance.PlayButtonClick();
             if (isMoving) return;
             OpenMenu();
+        });
+
+        btnNewGame.onClick.AddListener(() =>
+        {
+            AudioStartManager.Instance.PlayButtonClick();
+
+            if (PlayerPrefs.GetInt("FirstTimePlayed", 0) == 0)
+            {
+                if (isMoving) return;
+                videoManager.PlayNewGame();
+            }
+            else
+            {
+                if (isMoving) return;
+                OpenMenuNewGame();
+            }
+        });
+        btnNewGame.onClick.AddListener(() =>
+        {
+            AudioStartManager.Instance.PlayButtonClick();
+            if (isMoving) return;
+            panelConfirmNewGame.SetActive(true);
         });
 
         btnExit.onClick.AddListener(() =>
@@ -59,6 +104,13 @@ public class StartManager : MonoBehaviour
             AudioStartManager.Instance.PlayButtonClick();
             if (isMoving) return;
             CloseMenu();
+        });
+
+        btnBackNewGame.onClick.AddListener(() =>
+        {
+            AudioStartManager.Instance.PlayButtonClick();
+            if (isMoving) return;
+            CloseMenuNewGame();
         });
 
         // ========== SLIDER EVENTS ==========
@@ -105,6 +157,39 @@ public class StartManager : MonoBehaviour
             .OnComplete(() =>
             {
                 panelMenuSetting.SetActive(false);
+                isMoving = false;
+            });
+    }
+
+    private void OpenMenuNewGame()
+    {
+        isMoving = true;
+        panelConfirmNewGame.SetActive(true);
+        btnBackNewGame.interactable = false;
+
+        menuNewGameRect.anchoredPosition = hiddenPos;
+
+        menuNewGameRect.DOAnchorPos(showPos, 1f)
+            .SetEase(Ease.OutCubic)
+            .OnComplete(() =>
+            {
+                isMoving = false;
+                btnBackNewGame.interactable = true;
+                btnConfirmNewGame.interactable = true;
+            });
+    }
+
+    private void CloseMenuNewGame()
+    {
+        isMoving = true;
+        btnBackNewGame.interactable = false;
+        btnConfirmNewGame.interactable = false;
+
+        menuNewGameRect.DOAnchorPos(hiddenPos, 1f)
+            .SetEase(Ease.InCubic)
+            .OnComplete(() =>
+            {
+                panelConfirmNewGame.SetActive(false);
                 isMoving = false;
             });
     }

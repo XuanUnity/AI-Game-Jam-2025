@@ -20,6 +20,11 @@ public class PlayerController : Singleton<PlayerController>
     public Image energyBar;
     public bool isPause;
 
+    public bool IsInLight
+    {
+        get { return checkLight.inLight; }
+    }
+
     public void SetPause(bool pause)
     {
         isPause = pause;
@@ -41,6 +46,7 @@ public class PlayerController : Singleton<PlayerController>
         healthBar.fillAmount = 1f;
         SetPause(false);
         energyBar.fillAmount = 1f;
+        gameObject.transform.localScale = Vector3.one;
     }
     public void SetEnergyBar()
     {

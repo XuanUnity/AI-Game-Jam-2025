@@ -24,6 +24,10 @@ public class DataMapSelect : MonoBehaviour
         {
             if (isLock) return;
 
+            if(mapID == 0)
+            {
+                TutorialManager.Instance.isTutorial = true;
+            }
             GameManagerInMap.Instance.StartGame(mapID);
         });
     }

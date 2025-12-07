@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TimeSlider : MonoBehaviour
@@ -18,14 +19,30 @@ public class TimeSlider : MonoBehaviour
     private bool isRunning = false;
     private bool isReversing = false;
 
+    [SerializeField] private TextMeshProUGUI textTime;
+    private float currentTime;
+    private float maxtime;
+
     void Update()
     {
         if (!isRunning) return;
         if(isReversing)
         {
-            timer -= Time.deltaTime;
+            timer -= Time.deltaTime * 2;
+            currentTime += Time.deltaTime * 2;
+            if(currentTime > maxtime)
+            {
+                currentTime = maxtime;
+            }
         } else
+        {
             timer += Time.deltaTime;
+            currentTime -= Time.deltaTime;
+            if(currentTime < 0f)
+            {
+                currentTime = 0f;
+            }
+        }
 
         float t = Mathf.Clamp01(timer / duration);
 
@@ -39,6 +56,8 @@ public class TimeSlider : MonoBehaviour
         {
             isRunning = false;
         }
+
+        UpdateTimeText();
     }
 
     // Gọi hàm này khi bắt đầu đếm giờ
@@ -49,6 +68,9 @@ public class TimeSlider : MonoBehaviour
         slider.value = 0;
 
         duration = time;
+        maxtime = time;
+        currentTime = time;
+        UpdateTimeText();
 
         fillImage.color = startColor;
 
@@ -76,5 +98,13 @@ public class TimeSlider : MonoBehaviour
         timer = 0f;
         slider.value = 0;
         fillImage.color = startColor;
+    }
+
+    private void UpdateTimeText()
+    {
+        int minutes = Mathf.FloorToInt(currentTime / 60f);
+        int seconds = Mathf.FloorToInt(currentTime % 60f);
+
+        textTime.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }

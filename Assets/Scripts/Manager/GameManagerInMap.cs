@@ -51,6 +51,13 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
         PlayerController.Instance.SetLight(currentMap);
         uiInGame.SetActive(true);
         lightController.StartLight(selectedMap.timeLimit);
+
+        if(mapID == 0 && TutorialManager.Instance.isTutorial)
+        {
+            GameManagerInMap.Instance.PauseGame();
+            TutorialManager.Instance.indexStep = 1;
+            TutorialManager.Instance.OnTutorial();
+        }
     }
 
     public void RestartGame()
@@ -80,6 +87,11 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
     public void PauseGame()
     {
         PlayerController.Instance.SetPause(true);
+        lightController.SetActionLight(true);
+    }
+
+    public void PauseLight()
+    {
         lightController.SetActionLight(true);
     }
 
