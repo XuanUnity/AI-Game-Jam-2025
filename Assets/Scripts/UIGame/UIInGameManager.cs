@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -63,5 +63,22 @@ public class UIInGameManager : MonoBehaviour
             pannelMenuSetting.SetActive(true);
         });
 
+        // ========== SLIDER EVENTS ==========
+        sliderMusic.onValueChanged.AddListener(SetMusicVolume);
+        sliderEffect.onValueChanged.AddListener(SetSoundVolume);
+
+        // Load volume đã lưu
+        sliderMusic.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        sliderEffect.value = PlayerPrefs.GetFloat("SoundVolume", 1f);
+    }
+
+    private void SetMusicVolume(float value)
+    {
+        AudioManagerMain.Instance.SetBGMVolume(value);
+    }
+
+    private void SetSoundVolume(float value)
+    {
+        AudioManagerMain.Instance.SetSFXVolume(value);
     }
 }

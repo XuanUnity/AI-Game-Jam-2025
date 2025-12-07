@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -32,12 +32,30 @@ public class UIGameManager : Singleton<UIGameManager>
             AudioManagerMain.Instance.PlayButtonClick();
             panelSetting.SetActive(false);
         });
+
+        // ========== SLIDER EVENTS ==========
+        sliderMusic.onValueChanged.AddListener(SetMusicVolume);
+        sliderSound.onValueChanged.AddListener(SetSoundVolume);
+
+        // Load volume đã lưu
+        sliderMusic.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        sliderSound.value = PlayerPrefs.GetFloat("SoundVolume", 1f);
     }
 
     public void SetActiveUIMainGame(bool isActive)
     {
         UIGameMain.SetActive(isActive);
         menuSetting.SetActive(isActive);
+    }
+
+    private void SetMusicVolume(float value)
+    {
+        AudioManagerMain.Instance.SetBGMVolume(value);
+    }
+
+    private void SetSoundVolume(float value)
+    {
+        AudioManagerMain.Instance.SetSFXVolume(value);
     }
 
 }

@@ -15,12 +15,14 @@ public class DoorController : MonoBehaviour
         {
             isTriggered = true;
             StartCoroutine(FlyAndShrinkPlayer(collision.transform));
+            PlayerController.Instance.SetPause(true);
             GameManagerInMap.Instance.PauseLight();
+            //GameManagerInMap.Instance.StartMap1();
+            GameManagerInMap.Instance.UnNextMap();
 
-            if(TutorialManager.Instance.isTutorial)
+            if (TutorialManager.Instance.isTutorial)
             {
                 TutorialManager.Instance.isTutorial = false;
-                GameManagerInMap.Instance.StartMap1();
             }
         }
     }
