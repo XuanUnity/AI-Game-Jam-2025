@@ -9,7 +9,7 @@ public class DataMapSelect : MonoBehaviour
     [SerializeField] private Button btnPlay;
     public bool isLock = true;
 
-    [SerializeField] private GameObject look;
+    [SerializeField] private GameObject lockMap;
     [SerializeField] private Animator animator;
     [SerializeField] private RuntimeAnimatorController run;
     [SerializeField] private Image image;
@@ -20,15 +20,17 @@ public class DataMapSelect : MonoBehaviour
         {
             image.color = Color.gray;
         }
+
+        // Dang bi loi !!!
+        //else
+        //{
+        //    UnLock();
+        //}
+
         btnPlay.onClick.AddListener(() =>
         {
             if (isLock) return;
-
-            if(mapID == 0)
-            {
-                TutorialManager.Instance.isTutorial = true;
-            }
-            GameManagerInMap.Instance.StartGame(mapID);
+         GameManagerInMap.Instance.StartGame(mapID);
         });
     }
 
@@ -36,7 +38,7 @@ public class DataMapSelect : MonoBehaviour
     {
         isLock = false;
         //animator.runtimeAnimatorController = run;
-        look.SetActive(false);
+        lockMap.SetActive(false);
         image.color = Color.white;
     }
 }
