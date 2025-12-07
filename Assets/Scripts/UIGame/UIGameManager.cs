@@ -13,6 +13,8 @@ public class UIGameManager : Singleton<UIGameManager>
     [SerializeField] private Slider sliderMusic;
     [SerializeField] private Slider sliderSound;
 
+    [SerializeField] private GameObject menuSetting;
+
     private void Start()
     {
         btnBack.onClick.AddListener(() =>
@@ -32,5 +34,6 @@ public class UIGameManager : Singleton<UIGameManager>
     public void SetActiveUIMainGame(bool isActive)
     {
         UIGameMain.SetActive(isActive);
+        menuSetting.SetActive(isActive);
     }
 }
