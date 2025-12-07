@@ -67,19 +67,14 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
         {
             Debug.Log("Current map is null, cannot restart game.");
         }
+        Debug.Log("Restarting game on map ID: " + currentMapID);
         StartGame(currentMapID);
     }
 
     public void NextLevelGame() // level tiếp theo
     {
         currentMap.SetActive(false);
-        if (currentMapID < mapObjects.Count)
-        {
-            currentMapID++;
-            mapUnLock = Mathf.Max(mapUnLock, currentMapID);
-            PlayerPrefs.SetInt("MapUnLock", mapUnLock);
-            dataMapSelect[currentMapID].UnLock();
-        }
+        StartMap1();
         StartGame(currentMapID);
     }
 
@@ -89,6 +84,15 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
         {
             currentMapID++;
             mapUnLock = Mathf.Max(mapUnLock, currentMapID);
+            PlayerPrefs.SetInt("MapUnLock", mapUnLock);
+            dataMapSelect[currentMapID].UnLock();
+        }
+    }
+    public void UnNextMap()
+    {
+        if (currentMapID < mapObjects.Count)
+        {
+            mapUnLock = Mathf.Max(mapUnLock, currentMapID + 1);
             PlayerPrefs.SetInt("MapUnLock", mapUnLock);
             dataMapSelect[currentMapID].UnLock();
         }
