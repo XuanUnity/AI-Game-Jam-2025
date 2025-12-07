@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     bool isGrounded;
     bool isPaused = false;
 
+    private bool doubleJump;
+
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -69,11 +71,18 @@ public class PlayerMovement : MonoBehaviour
         transform.Translate(Vector3.right * moveSpeed * positionPlayer * Time.deltaTime);
 
         // Jump
-        isGrounded = Physics2D.OverlapCapsule(groundCheck.position, new Vector2(0.95f, 0.25f), CapsuleDirection2D.Horizontal, 0, groundLayer);
+        isGrounded = Physics2D.OverlapCapsule(groundCheck.position, new Vector2(0.5f, 0.25f), CapsuleDirection2D.Horizontal, 0, groundLayer);
 
-        if (Input.GetKey(KeyCode.Space) && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            doubleJump = true;
         }
+        else if (Input.GetButtonDown("Jump") && doubleJump) {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            doubleJump = false;
+        }
+        
+        
     }
 }
