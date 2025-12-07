@@ -15,14 +15,14 @@ MonoBehaviour:
   maps:
   - mapName: Map1
     mapID: 0
-    timeLimit: 600
+    timeLimit: 60
     healthPlayer: 300
     enrgyPlayer: 400
   - mapName: Map1
     mapID: 1
     timeLimit: 60
-    healthPlayer: 1000
-    enrgyPlayer: 100
+    healthPlayer: 300
+    enrgyPlayer: 300
   - mapName: Map1
     mapID: 2
     timeLimit: 60
