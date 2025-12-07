@@ -2378,7 +2378,7 @@ MonoBehaviour:
   btnBack: {fileID: 2336584550997970337}
   btnNext: {fileID: 8976802905958806871}
   btnRetry: {fileID: 2400284619259781591}
-  pannelLose: {fileID: 3943870623048591976}
+  pannelLose: {fileID: 2834105355099195538}
   btnBackLose: {fileID: 7122440216165703437}
   btnRetryLose: {fileID: 5379383557750742472}
 --- !u!1 &224383251
@@ -14015,6 +14015,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8693489418366874435, guid: 4026c3f18e630a543bb198499454bfd8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18742,7 +18746,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1985898234
 Transform:
   m_ObjectHideFlags: 0
@@ -19847,7 +19851,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2124415912
 MonoBehaviour:
   m_ObjectHideFlags: 0

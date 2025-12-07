@@ -39,4 +39,5 @@ public class UIGameManager : Singleton<UIGameManager>
         UIGameMain.SetActive(isActive);
         menuSetting.SetActive(isActive);
     }
+
 }

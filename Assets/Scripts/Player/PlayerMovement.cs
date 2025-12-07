@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] public Rigidbody2D rb;
     [SerializeField] public float moveSpeed = 1f;
     public float positionPlayer;
     [SerializeField] public float jumpForce = 2f;
@@ -70,8 +70,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        //transform.Translate(Vector3.right * moveSpeed * positionPlayer * Time.deltaTime);
-        rb.velocity = new Vector2(positionPlayer * moveSpeed, rb.velocity.y);
+        transform.Translate(Vector3.right * moveSpeed * positionPlayer * Time.deltaTime);
+        //rb.velocity = new Vector2(positionPlayer * moveSpeed, rb.velocity.y);
 
         // Jump
         isGrounded = Physics2D.OverlapCapsule(groundCheck.position, new Vector2(0.5f, 0.5f), CapsuleDirection2D.Horizontal, 0, groundLayer);

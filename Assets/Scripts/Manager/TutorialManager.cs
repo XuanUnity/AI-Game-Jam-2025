@@ -28,6 +28,7 @@ public class TutorialManager : Singleton<TutorialManager>
             step4.SetActive(false);
             step5.SetActive(false);
             step6.SetActive(false);
+            GameManagerInMap.Instance.StartMap1();
         });
 
 
