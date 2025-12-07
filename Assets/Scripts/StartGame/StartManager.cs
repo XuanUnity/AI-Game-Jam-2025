@@ -40,7 +40,7 @@ public class StartManager : MonoBehaviour
         btnBackNewGame.interactable = false;
         btnConfirmNewGame.interactable = false;
 
-        if(PlayerPrefs.GetInt("FirstTimePlayed", 0) == 0)
+        if(PlayerPrefs.GetInt("FirstTimePlayed", 1) == 0)
         {
             btnPlay.interactable = false;
         }

@@ -20,6 +20,7 @@ public class DoorController : MonoBehaviour
             if(TutorialManager.Instance.isTutorial)
             {
                 TutorialManager.Instance.isTutorial = false;
+                GameManagerInMap.Instance.StartMap1();
             }
         }
     }

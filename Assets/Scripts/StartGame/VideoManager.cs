@@ -28,7 +28,7 @@ public class VideoManager : MonoBehaviour
         Name.gameObject.SetActive(false);
 
         // Nếu chưa từng chạy → FirstTimePlayed = false
-        firstTimePlayed = PlayerPrefs.GetInt("FirstTimePlayed", 1) == 0;
+        firstTimePlayed = PlayerPrefs.GetInt("FirstTimePlayed", 1) == 1;
         //firstTimePlayed = false;
         skipButton.onClick.AddListener(() =>
         {
@@ -38,16 +38,17 @@ public class VideoManager : MonoBehaviour
     }
     public void PlayContinue()
     {
-        firstTimePlayed = true;
-        PlayerPrefs.SetInt("FirstTimePlayed", 0);
-        PlayerPrefs.Save();
+        firstTimePlayed = false;
+/*        PlayerPrefs.SetInt("FirstTimePlayed", 0);
+        PlayerPrefs.Save();*/
         OnPlayClicked();
     }
 
     public void PlayNewGame()
     {
-        firstTimePlayed = false;
+        firstTimePlayed = true;
         PlayerPrefs.SetInt("FirstTimePlayed", 1);
+        PlayerPrefs.SetInt("FirstTime", 1);
         PlayerPrefs.Save();
         OnPlayClicked();
     }
@@ -58,7 +59,7 @@ public class VideoManager : MonoBehaviour
         videoPlayer.loopPointReached -= OnVideoFinished;
         videoPlayer.loopPointReached += OnVideoFinished;
 
-        if (!firstTimePlayed)
+        if (firstTimePlayed)
         {
             // ========== VIDEO 1 ==========
             rawImage1.gameObject.SetActive(true);
@@ -70,7 +71,6 @@ public class VideoManager : MonoBehaviour
 
             skipButton.gameObject.SetActive(true);
 
-            PlayerPrefs.SetInt("FirstTimePlayed", 1);
             firstTimePlayed = true;
         }
         else

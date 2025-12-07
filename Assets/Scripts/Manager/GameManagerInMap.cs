@@ -52,7 +52,7 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
         uiInGame.SetActive(true);
         lightController.StartLight(selectedMap.timeLimit);
 
-        if(mapID == 0 && TutorialManager.Instance.isTutorial)
+        if(mapID == 0)
         {
             GameManagerInMap.Instance.PauseGame();
             TutorialManager.Instance.indexStep = 1;
@@ -79,9 +79,18 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
             PlayerPrefs.SetInt("MapUnLock", mapUnLock);
             dataMapSelect[currentMapID].UnLock();
         }
-
-
         StartGame(currentMapID);
+    }
+
+    public void StartMap1()
+    {
+        if (currentMapID < mapObjects.Count)
+        {
+            currentMapID++;
+            mapUnLock = Mathf.Max(mapUnLock, currentMapID);
+            PlayerPrefs.SetInt("MapUnLock", mapUnLock);
+            dataMapSelect[currentMapID].UnLock();
+        }
     }
 
     public void PauseGame()

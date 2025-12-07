@@ -31,7 +31,7 @@ public class TutorialManager : Singleton<TutorialManager>
         });
 
 
-        isTutorial = PlayerPrefs.GetInt("FirstTimePlayed", 1) == 1;
+        isTutorial = PlayerPrefs.GetInt("FirstTime", 1) == 1;
         step1.SetActive(false);
         step2.SetActive(false);
         step3.SetActive(false);
@@ -42,6 +42,7 @@ public class TutorialManager : Singleton<TutorialManager>
         if (isTutorial)
         {
             step1.SetActive(true);
+            PlayerPrefs.SetInt("FirstTime", 0);
         }
         else
         {
@@ -128,6 +129,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
     public void OnTutorial()
     {
+        isTutorial = true;
         indexStep = 2;
         step2.SetActive (true);
         GameManagerInMap.Instance.PauseGame();
