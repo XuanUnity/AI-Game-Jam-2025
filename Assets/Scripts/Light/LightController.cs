@@ -5,13 +5,17 @@ using UnityEngine;
 public class LightController : MonoBehaviour
 {
     [SerializeField] private GameObject lightObject;
-    [SerializeField] private float limitStart = 70f;     // góc bắt đầu
-    [SerializeField] private float limitEnd = -70f;      // góc kết thúc
+
+    // Giới hạn vị trí X (thay cho góc quay)
+    [SerializeField] private float limitLeftX = -5f;
+    [SerializeField] private float limitRightX = 5f;
 
     [SerializeField] private float dynamicSpeed;
     [SerializeField] private TimeSlider timeSlider;
+
     private float durateTime;
-    private float rotationZ;
+    private float currentPosX;
+
     private bool isRunning = false;
     private bool isTimeReversing = false;
     private bool isPause = false;
@@ -23,12 +27,14 @@ public class LightController : MonoBehaviour
 
     public void StartLight(float time)
     {
-        rotationZ = limitStart;
-        lightObject.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
+        // Bắt đầu từ phía LEFT
+        currentPosX = limitLeftX;
+        SetLightPosition(currentPosX);
+
         durateTime = time;
 
-        float angleDistance = Mathf.Abs(limitStart - limitEnd); // 140
-        dynamicSpeed = angleDistance / durateTime;              // độ/giây
+        float distance = Mathf.Abs(limitRightX - limitLeftX);
+        dynamicSpeed = distance / durateTime; // đơn vị / giây
 
         isRunning = true;
         isPause = false;
@@ -47,32 +53,39 @@ public class LightController : MonoBehaviour
 
     private void RunLight()
     {
-        float rotateSpeed = dynamicSpeed * Time.deltaTime;
+        float moveStep = dynamicSpeed * Time.deltaTime;
 
         if (isTimeReversing)
         {
-            // Quay ngược lại (về 70)
-            rotationZ += rotateSpeed;
+            // Di chuyển ngược: RIGHT → LEFT
+            currentPosX -= moveStep * 2;
             DrainEnergy();
 
-            if (rotationZ >= limitStart)
+            if (currentPosX <= limitLeftX)
             {
-                rotationZ = limitStart;
+                currentPosX = limitLeftX;
             }
         }
         else
         {
-            // Quay xuôi (từ 70 -> -70)
-            rotationZ -= rotateSpeed;
+            // Di chuyển xuôi: LEFT → RIGHT
+            currentPosX += moveStep;
 
-            if (rotationZ <= limitEnd)
+            if (currentPosX >= limitRightX)
             {
-                rotationZ = limitEnd;
+                currentPosX = limitRightX;
                 StopLight();
             }
         }
 
-        lightObject.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
+        SetLightPosition(currentPosX);
+    }
+
+    private void SetLightPosition(float x)
+    {
+        Vector3 pos = lightObject.transform.position;
+        pos.x = x;
+        lightObject.transform.position = pos;
     }
 
     private void StopLight()
@@ -81,7 +94,6 @@ public class LightController : MonoBehaviour
         OnEnd();
     }
 
-    // Hàm rỗng – bạn dùng sau này nếu muốn xử lý thêm
     private void OnEnd()
     {
         GameManagerInMap.Instance.LoseGame();
