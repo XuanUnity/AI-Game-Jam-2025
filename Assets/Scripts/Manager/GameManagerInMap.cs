@@ -34,7 +34,7 @@ public class GameManagerInMap : Singleton<GameManagerInMap>
         PlayerController.Instance.InitState(selectedMap);
         PlayerController.Instance.SetLight(currentMap);
         uiInGame.SetActive(true);
-        lightController.StartLight();
+        lightController.StartLight(selectedMap.timeLimit);
     }
 
     public void RestartGame()

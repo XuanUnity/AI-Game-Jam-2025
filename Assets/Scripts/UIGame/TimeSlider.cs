@@ -8,7 +8,7 @@ public class TimeSlider : MonoBehaviour
     public Image fillImage;
 
     [Header("Time")]
-    public float duration = 5f; // Tổng thời gian
+    public float duration; // Tổng thời gian
 
     [Header("Colors")]
     public Color startColor = Color.yellow;
@@ -42,11 +42,13 @@ public class TimeSlider : MonoBehaviour
     }
 
     // Gọi hàm này khi bắt đầu đếm giờ
-    public void StartTimer()
+    public void StartTimer(float time)
     {
         slider.minValue = 0;
         slider.maxValue = 1;
         slider.value = 0;
+
+        duration = time;
 
         fillImage.color = startColor;
 

@@ -6,26 +6,89 @@ using UnityEngine.Tilemaps;
 
 public class PlayerCheckLight : MonoBehaviour
 {
+    [Header("References")]
+    public Transform player;
+    public Light2D lightSource;
+    public LayerMask obstacleMask;
+
+    [Header("Debug")]
+    public bool debugRays = false;
+
+    [Header("Quality Settings")]
+    public int circleSamples = 12;
+    public int tilemapGridSamples = 3;
+
+    [HideInInspector]
+    public bool inLight;
+
+    // =================== API CỦA BẠN (GIỮ NGUYÊN) ===================
+    public void SetLight2D(GameObject map)
+    {
+        if (map == null)
+        {
+            Debug.LogError("Map is null!");
+            lightSource = null;
+            return;
+        }
+
+        // Tìm object con tên "Light"
+        Transform lightParent = map.transform.Find("Light");
+        if (lightParent == null)
+        {
+            Debug.LogError("Không tìm thấy object 'Light' trong Map!");
+            lightSource = null;
+            return;
+        }
+
+        // Tìm Light2D
+        Light2D light2D = lightParent.GetComponentInChildren<Light2D>(true);
+        if (light2D == null)
+        {
+            Debug.LogError("Không tìm thấy Light2D trong 'Light'!");
+            lightSource = null;
+            return;
+        }
+
+        lightSource = light2D;
+    }
+
+    void Update()
+    {
+        inLight = IsPlayerInLight(player, lightSource, obstacleMask);
+    }
+
+    // =================== CORE LOGIC (ĐÃ FIX) ===================
     public static bool IsPlayerInLight(Transform player, Light2D light2D, LayerMask obstacleLayer)
     {
+        if (player == null || light2D == null)
+            return false;
+
         Collider2D[] colliders = player.GetComponentsInChildren<Collider2D>();
+        Vector2 lightPos = (Vector2)light2D.transform.position;
 
         foreach (var col in colliders)
         {
+            if (col == null) continue;
+
             foreach (var point in GetColliderPoints(col))
             {
-                Vector2 dir = (Vector2)light2D.transform.position - point;
-                float dist = dir.magnitude;
+                // Check distance trước
+                float dist = Vector2.Distance(lightPos, point);
+                if (dist > light2D.pointLightOuterRadius)
+                    continue;
 
-                // Raycast từ point về phía light
-                RaycastHit2D hit = Physics2D.Raycast(point, dir.normalized, dist, obstacleLayer);
+                Vector2 dir = point - lightPos;
+                float rayDist = dir.magnitude;
 
-                // Nếu không có vật cản → điểm này nhận được ánh sáng
+                if (rayDist <= 0.0001f)
+                    return true;
+
+                // ✅ Raycast từ LIGHT -> PLAYER
+                RaycastHit2D hit = Physics2D.Raycast(lightPos, dir.normalized, rayDist, obstacleLayer);
+
                 if (hit.collider == null)
                 {
-                    // Kiểm tra xem nằm trong radius ánh sáng
-                    if (dist <= light2D.pointLightOuterRadius)
-                        return true;
+                    return true; // Không bị che → có ánh sáng
                 }
             }
         }
@@ -33,19 +96,20 @@ public class PlayerCheckLight : MonoBehaviour
         return false;
     }
 
-    // Lấy tất cả điểm kiểm tra trên collider
+    // =================== COLLIDER SAMPLING (ĐÃ FIX) ===================
     private static IEnumerable<Vector2> GetColliderPoints(Collider2D col)
     {
         // CircleCollider2D
         if (col is CircleCollider2D circle)
         {
             int segments = 12;
+            yield return (Vector2)circle.transform.TransformPoint(circle.offset);
+
             for (int i = 0; i < segments; i++)
             {
                 float angle = i * Mathf.PI * 2f / segments;
-                yield return (Vector2)circle.transform.TransformPoint(
-                    circle.offset + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * circle.radius
-                );
+                Vector2 local = circle.offset + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * circle.radius;
+                yield return (Vector2)circle.transform.TransformPoint(local);
             }
         }
         // BoxCollider2D
@@ -58,6 +122,7 @@ public class PlayerCheckLight : MonoBehaviour
                 new Vector2(-size.x,  size.y),
                 new Vector2( size.x,  size.y),
                 new Vector2( size.x, -size.y),
+                Vector2.zero
             };
 
             foreach (var p in localPoints)
@@ -66,74 +131,71 @@ public class PlayerCheckLight : MonoBehaviour
         // PolygonCollider2D
         else if (col is PolygonCollider2D poly)
         {
+            Vector2 center = Vector2.zero;
             for (int i = 0; i < poly.points.Length; i++)
+            {
+                center += poly.points[i];
                 yield return poly.transform.TransformPoint(poly.points[i]);
+            }
+
+            if (poly.points.Length > 0)
+            {
+                center /= poly.points.Length;
+                yield return poly.transform.TransformPoint(center);
+            }
         }
         // ✅ TilemapCollider2D
         else if (col is TilemapCollider2D tileCol)
         {
+            if (tileCol.usedByComposite)
+                yield break;
+
             Bounds b = tileCol.bounds;
-            yield return b.center;
+            int grid = 3;
+
+            for (int y = 0; y < grid; y++)
+            {
+                float ty = Mathf.Lerp(b.min.y, b.max.y, (grid == 1) ? 0.5f : (float)y / (grid - 1));
+                for (int x = 0; x < grid; x++)
+                {
+                    float tx = Mathf.Lerp(b.min.x, b.max.x, (grid == 1) ? 0.5f : (float)x / (grid - 1));
+                    yield return new Vector2(tx, ty);
+                }
+            }
         }
-        // ✅ CompositeCollider2D (PHẦN BẠN YÊU CẦU THÊM)
+        // ✅ CompositeCollider2D
         else if (col is CompositeCollider2D composite)
         {
             int pathCount = composite.pathCount;
-            Vector2[] pointsBuffer = new Vector2[64];
+            Vector2[] buffer = new Vector2[64];
 
             for (int p = 0; p < pathCount; p++)
             {
                 int pointCount = composite.GetPathPointCount(p);
+                if (pointCount <= 0) continue;
 
-                // Resize buffer nếu thiếu
-                if (pointsBuffer.Length < pointCount)
-                    pointsBuffer = new Vector2[pointCount];
+                if (buffer.Length < pointCount)
+                    buffer = new Vector2[pointCount];
 
-                composite.GetPath(p, pointsBuffer);
+                composite.GetPath(p, buffer);
 
+                // center
+                Vector2 center = Vector2.zero;
                 for (int i = 0; i < pointCount; i++)
-                {
-                    yield return composite.transform.TransformPoint(pointsBuffer[i]);
-                }
+                    center += buffer[i];
+                center /= pointCount;
+
+                yield return composite.transform.TransformPoint(center);
+
+                // all vertices
+                for (int i = 0; i < pointCount; i++)
+                    yield return composite.transform.TransformPoint(buffer[i]);
             }
         }
-    }
-
-    public Transform player;
-    public Light2D lightSource;
-    public LayerMask obstacleMask;
-    public bool inLight;
-
-    public void SetLight2D(GameObject map)
-    {
-        if (map == null)
+        // Fallback
+        else
         {
-            Debug.LogError("Map is null!");
-            lightSource =  null;
+            yield return col.transform.position;
         }
-
-        // Tìm GameObject con tên "Light"
-        Transform lightParent = map.transform.Find("Light");
-        if (lightParent == null)
-        {
-            Debug.LogError("Không tìm thấy object 'Light' trong Map!");
-            lightSource = null;
-        }
-
-        // Tìm component Light2D trong các object con của "Light"
-        Light2D light2D = lightParent.GetComponentInChildren<Light2D>(true);
-
-        if (light2D == null)
-        {
-            Debug.LogError("Không tìm thấy Light2D trong 'Light'!");
-            lightSource = null;
-        }
-
-        lightSource = light2D;
-    }
-
-    void Update()
-    {
-        inLight = IsPlayerInLight(player, lightSource, obstacleMask);
     }
 }
