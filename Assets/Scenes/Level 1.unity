@@ -5653,7 +5653,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &996490375
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9169,6 +9169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataMap: {fileID: 11400000, guid: 1c9414b8cfeaf8f4dab9b829b4798c80, type: 2}
   lightController: {fileID: 0}
+  uiWinLose: {fileID: 0}
   uiInGame: {fileID: 1476200818}
   player: {fileID: 996490374}
   mapObjects:
