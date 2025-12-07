@@ -23,6 +23,8 @@ public class StartManager : MonoBehaviour
     private Vector2 hiddenPos = new Vector2(-650f, 0f);
     private Vector2 showPos = new Vector2(0f, 0f);
 
+    [SerializeField] private VideoManager videoManager;
+
     private void Start()
     {
         // Vị trí ban đầu: ẩn menu
@@ -34,7 +36,7 @@ public class StartManager : MonoBehaviour
         btnPlay.onClick.AddListener(() =>
         {
             if (isMoving) return;
-            SceneManager.LoadScene("MainScene");
+            videoManager.OnPlayClicked();
         });
 
         btnSetting.onClick.AddListener(() =>
